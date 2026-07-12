@@ -21,6 +21,29 @@ import ProtectedRoute from '@/components/common/ProtectedRoute';
 // Pages
 import LoginPage from '@/pages/auth/LoginPage';
 import DashboardPage from '@/pages/dashboard/DashboardPage';
+import DepartmentsPage from '@/pages/departments/DepartmentsPage';
+import CategoriesPage from '@/pages/categories/CategoriesPage';
+import EnvironmentalPage from '@/pages/environmental/EnvironmentalPage';
+import EmissionFactorsPage from '@/pages/environmental/EmissionFactorsPage';
+import ProductProfilesPage from '@/pages/environmental/ProductProfilesPage';
+import EnvironmentalGoalsPage from '@/pages/environmental/EnvironmentalGoalsPage';
+import CarbonTransactionsPage from '@/pages/environmental/CarbonTransactionsPage';
+import SocialPage from '@/pages/social/SocialPage';
+import CSRActivitiesPage from '@/pages/social/CSRActivitiesPage';
+import ParticipationsPage from '@/pages/social/ParticipationsPage';
+
+import GovernancePage from '@/pages/governance/GovernancePage';
+import PoliciesPage from '@/pages/governance/PoliciesPage';
+import AuditsPage from '@/pages/governance/AuditsPage';
+import CompliancePage from '@/pages/governance/CompliancePage';
+
+import ChallengesPage from '@/pages/gamification/ChallengesPage';
+import BadgesPage from '@/pages/gamification/BadgesPage';
+import LeaderboardPage from '@/pages/gamification/LeaderboardPage';
+import RewardsPage from '@/pages/rewards/RewardsPage';
+
+import ReportsPage from '@/pages/ReportsPage';
+import NotificationsPage from '@/pages/NotificationsPage';
 
 import { ROUTES } from '@/constants/routes';
 
@@ -63,21 +86,28 @@ export default function App() {
                 }
               >
                 <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
-
-                {/* Placeholder routes for future modules */}
-                <Route path={ROUTES.DEPARTMENTS} element={<PlaceholderPage title="Departments" />} />
-                <Route path={ROUTES.CATEGORIES} element={<PlaceholderPage title="Categories" />} />
-                <Route path={ROUTES.ENVIRONMENTAL} element={<PlaceholderPage title="Environmental" />} />
-                <Route path={ROUTES.SOCIAL} element={<PlaceholderPage title="Social" />} />
-                <Route path={ROUTES.GOVERNANCE} element={<PlaceholderPage title="Governance" />} />
+                <Route path={ROUTES.DEPARTMENTS} element={<DepartmentsPage />} />
+                <Route path={ROUTES.CATEGORIES} element={<CategoriesPage />} />
+                <Route path={ROUTES.ENVIRONMENTAL} element={<EnvironmentalPage />} />
+                <Route path={ROUTES.EMISSION_FACTORS} element={<EmissionFactorsPage />} />
+                <Route path={ROUTES.PRODUCT_PROFILES} element={<ProductProfilesPage />} />
+                <Route path={ROUTES.ENVIRONMENTAL_GOALS} element={<EnvironmentalGoalsPage />} />
+                <Route path={ROUTES.CARBON_TRANSACTIONS} element={<CarbonTransactionsPage />} />
+                <Route path={ROUTES.SOCIAL} element={<SocialPage />} />
+                <Route path={ROUTES.CSR_ACTIVITIES} element={<CSRActivitiesPage />} />
+                <Route path={ROUTES.PARTICIPATIONS} element={<ParticipationsPage />} />
+                <Route path={ROUTES.GOVERNANCE} element={<GovernancePage />} />
+                <Route path={ROUTES.POLICIES} element={<PoliciesPage />} />
+                <Route path={ROUTES.AUDITS} element={<AuditsPage />} />
+                <Route path={ROUTES.COMPLIANCE} element={<CompliancePage />} />
                 <Route path={ROUTES.GAMIFICATION} element={<PlaceholderPage title="Gamification" />} />
-                <Route path={ROUTES.CHALLENGES} element={<PlaceholderPage title="Challenges" />} />
-                <Route path={ROUTES.BADGES} element={<PlaceholderPage title="Badges" />} />
-                <Route path={ROUTES.LEADERBOARD} element={<PlaceholderPage title="Leaderboard" />} />
-                <Route path={ROUTES.REWARDS} element={<PlaceholderPage title="Rewards" />} />
-                <Route path={ROUTES.REPORTS} element={<PlaceholderPage title="Reports" />} />
-                <Route path={ROUTES.NOTIFICATIONS} element={<PlaceholderPage title="Notifications" />} />
-                <Route path={ROUTES.PROFILE} element={<PlaceholderPage title="Profile" />} />
+                <Route path={ROUTES.CHALLENGES} element={<ChallengesPage />} />
+                <Route path={ROUTES.BADGES} element={<BadgesPage />} />
+                <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
+                <Route path={ROUTES.REWARDS} element={<RewardsPage />} />
+                <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
+                <Route path={ROUTES.NOTIFICATIONS} element={<NotificationsPage />} />
+                <Route path={ROUTES.PROFILE} element={<PlaceholderPage title="User Profile" />} />
                 <Route path={ROUTES.SETTINGS} element={<PlaceholderPage title="Settings" />} />
               </Route>
 

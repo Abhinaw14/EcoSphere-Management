@@ -31,6 +31,44 @@ enum CategoryType {
   CHALLENGE
 }
 
+enum EnvironmentalType {
+  CARBON
+  ENERGY
+  WATER
+  WASTE
+}
+
+enum AuditStatus {
+  PENDING
+  PASSED
+  FAILED
+}
+
+enum InitiativeStatus {
+  PLANNING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum GoalStatus {
+  IN_PROGRESS
+  ACHIEVED
+  MISSED
+}
+
+enum TransactionType {
+  OFFSET
+  CREDIT
+  EMISSION
+}
+
+enum ChallengeStatus {
+  ACTIVE
+  COMPLETED
+  UPCOMING
+}
+
 // ============================================================
 // AUTH & USERS
 // ============================================================
@@ -50,8 +88,15 @@ model User {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   // Relations
-  department    Department?   @relation("DepartmentUsers", fields: [departmentId], references: [id])
-  refreshTokens RefreshToken[]
+  department           Department?           @relation("DepartmentUsers", fields: [departmentId], references: [id])
+  refreshTokens        RefreshToken[]
+  environmentalMetrics EnvironmentalMetric[]
+  governanceAudits     GovernanceAudit[]
+  userBadges           UserBadge[]
+  rewardRedemptions    RewardRedemption[]
+  socialParticipations SocialParticipation[]
+  notifications        Notification[]
+  reportSnapshots      ReportSnapshot[]
 
   @@map("users")
 }
@@ -84,9 +129,15 @@ model Department {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  users    User[]       @relation("DepartmentUsers")
-  parent   Department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id])
-  children Department[] @relation("DepartmentHierarchy")
+  users                User[]                @relation("DepartmentUsers")
+  parent               Department?           @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+  children             Department[]          @relation("DepartmentHierarchy")
+  environmentalMetrics EnvironmentalMetric[]
+  socialInitiatives    SocialInitiative[]
+  governanceAudits     GovernanceAudit[]
+  environmentalGoals   EnvironmentalGoal[]
+  carbonTransactions   CarbonTransaction[]
+  complianceRecords    ComplianceRecord[]
 
   @@map("departments")
 }
@@ -105,4 +156,290 @@ model Category {
   updatedAt   DateTime     @updatedAt @map("updated_at")
 
   @@map("categories")
+}
+
+// ============================================================
+// ENVIRONMENTAL
+// ============================================================
+
+model EnvironmentalMetric {
+  id           String            @id @default(uuid())
+  type         EnvironmentalType
+  value        Float
+  unit         String
+  recordedAt   DateTime          @map("recorded_at")
+  departmentId String            @map("department_id")
+  userId       String            @map("user_id")
+  createdAt    DateTime          @default(now()) @map("created_at")
+  updatedAt    DateTime          @updatedAt @map("updated_at")
+
+  department   Department        @relation(fields: [departmentId], references: [id])
+  user         User              @relation(fields: [userId], references: [id])
+
+  @@map("environmental_metrics")
+}
+
+model EmissionFactor {
+  id          String   @id @default(uuid())
+  source      String
+  factor      Float
+  unit        String
+  gasType     String   @map("gas_type")
+  region      String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("emission_factors")
+}
+
+model ProductProfile {
+  id              String   @id @default(uuid())
+  name            String
+  description     String?
+  category        String
+  carbonFootprint Float    @map("carbon_footprint")
+  waterUsage      Float    @map("water_usage")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("product_profiles")
+}
+
+model EnvironmentalGoal {
+  id            String     @id @default(uuid())
+  title         String
+  description   String?
+  targetValue   Float      @map("target_value")
+  currentValue  Float      @default(0) @map("current_value")
+  unit          String
+  deadline      DateTime
+  departmentId  String     @map("department_id")
+  status        GoalStatus @default(IN_PROGRESS)
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  department    Department @relation(fields: [departmentId], references: [id])
+
+  @@map("environmental_goals")
+}
+
+model CarbonTransaction {
+  id           String          @id @default(uuid())
+  type         TransactionType
+  amount       Float
+  date         DateTime
+  description  String?
+  departmentId String?         @map("department_id")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+
+  department   Department?     @relation(fields: [departmentId], references: [id])
+
+  @@map("carbon_transactions")
+}
+
+// ============================================================
+// SOCIAL
+// ============================================================
+
+model SocialInitiative {
+  id                String           @id @default(uuid())
+  title             String
+  description       String?
+  participantsCount Int              @default(0) @map("participants_count")
+  hoursLogged       Float            @default(0) @map("hours_logged")
+  status            InitiativeStatus @default(PLANNING)
+  departmentId      String           @map("department_id")
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+
+  department        Department       @relation(fields: [departmentId], references: [id])
+  participations    SocialParticipation[]
+
+  @@map("social_initiatives")
+}
+
+model SocialParticipation {
+  id             String           @id @default(uuid())
+  userId         String           @map("user_id")
+  initiativeId   String           @map("initiative_id")
+  hoursLogged    Float            @default(0) @map("hours_logged")
+  status         Status           @default(ACTIVE)
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  user           User             @relation(fields: [userId], references: [id])
+  initiative     SocialInitiative @relation(fields: [initiativeId], references: [id])
+
+  @@map("social_participations")
+}
+
+// ============================================================
+// GOVERNANCE
+// ============================================================
+
+enum PolicyStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum ComplianceStatus {
+  COMPLIANT
+  NON_COMPLIANT
+  PENDING
+}
+
+model Policy {
+  id          String        @id @default(uuid())
+  title       String
+  description String?
+  version     String        @default("1.0")
+  status      PolicyStatus  @default(DRAFT)
+  validUntil  DateTime?     @map("valid_until")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  compliances ComplianceRecord[]
+
+  @@map("policies")
+}
+
+model ComplianceRecord {
+  id           String           @id @default(uuid())
+  policyId     String           @map("policy_id")
+  departmentId String           @map("department_id")
+  status       ComplianceStatus @default(PENDING)
+  notes        String?
+  assessedAt   DateTime         @default(now()) @map("assessed_at")
+  createdAt    DateTime         @default(now()) @map("created_at")
+  updatedAt    DateTime         @updatedAt @map("updated_at")
+
+  policy       Policy           @relation(fields: [policyId], references: [id])
+  department   Department       @relation(fields: [departmentId], references: [id])
+
+  @@map("compliance_records")
+}
+
+model GovernanceAudit {
+  id            String      @id @default(uuid())
+  title         String
+  status        AuditStatus @default(PENDING)
+  auditorId     String      @map("auditor_id")
+  departmentId  String      @map("department_id")
+  scheduledDate DateTime    @map("scheduled_date")
+  completedDate DateTime?   @map("completed_date")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  auditor       User        @relation(fields: [auditorId], references: [id])
+  department    Department  @relation(fields: [departmentId], references: [id])
+
+  @@map("governance_audits")
+}
+
+// ============================================================
+// GAMIFICATION
+// ============================================================
+
+model Challenge {
+  id          String          @id @default(uuid())
+  title       String
+  description String?
+  xpReward    Int             @map("xp_reward")
+  startDate   DateTime        @map("start_date")
+  endDate     DateTime        @map("end_date")
+  status      ChallengeStatus @default(ACTIVE)
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@map("challenges")
+}
+
+model Badge {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  icon        String
+  xpThreshold Int         @map("xp_threshold")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  userBadges  UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  badgeId   String   @map("badge_id")
+  earnedAt  DateTime @default(now()) @map("earned_at")
+
+  user      User     @relation(fields: [userId], references: [id])
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+// ============================================================
+// REWARDS
+// ============================================================
+
+model Reward {
+  id          String             @id @default(uuid())
+  name        String
+  description String?
+  xpCost      Int                @map("xp_cost")
+  stock       Int                @default(0)
+  imageUrl    String?            @map("image_url")
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+
+  redemptions RewardRedemption[]
+
+  @@map("rewards")
+}
+
+model RewardRedemption {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  rewardId    String   @map("reward_id")
+  redeemedAt  DateTime @default(now()) @map("redeemed_at")
+
+  user        User     @relation(fields: [userId], references: [id])
+  reward      Reward   @relation(fields: [rewardId], references: [id])
+
+  @@map("reward_redemptions")
+}
+
+// ============================================================
+// REPORTS & NOTIFICATIONS
+// ============================================================
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  title     String
+  message   String
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+model ReportSnapshot {
+  id          String   @id @default(uuid())
+  title       String
+  type        String   
+  generatedBy String   @map("generated_by")
+  data        Json     
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user        User     @relation(fields: [generatedBy], references: [id])
+
+  @@map("report_snapshots")
 }

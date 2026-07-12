@@ -23,6 +23,8 @@ import { useTheme } from '@/context/ThemeContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ROUTES } from '@/constants/routes';
+import { useQuery } from '@tanstack/react-query';
+import { notificationService } from '@/services/notification.service';
 
 interface TopbarProps {
   sidebarCollapsed: boolean;
@@ -37,6 +39,12 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
     await logout();
     navigate(ROUTES.LOGIN);
   };
+
+  const { data: unreadCount = 0 } = useQuery({
+    queryKey: ['notifications', 'unread-count'],
+    queryFn: notificationService.getUnreadCount,
+    refetchInterval: 30000,
+  });
 
   const initials = user
     ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
@@ -106,9 +114,11 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
           onClick={() => navigate(ROUTES.NOTIFICATIONS)}
         >
           <Bell className="h-4 w-4" />
-          <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground">
-            3
-          </span>
+          {unreadCount > 0 && (
+            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground">
+              {unreadCount}
+            </span>
+          )}
         </Button>
 
         {/* Profile Menu */}
