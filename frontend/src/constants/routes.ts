@@ -8,8 +8,9 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
 
+  HOME: '/',
   // Dashboard
-  DASHBOARD: '/',
+  DASHBOARD: '/dashboard',
 
   // Departments
   DEPARTMENTS: '/departments',

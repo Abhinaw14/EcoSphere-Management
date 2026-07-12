@@ -150,9 +150,9 @@ export default function LoginPage() {
       <div className="mt-6 rounded-lg bg-muted/50 p-3">
         <p className="text-xs font-medium text-muted-foreground mb-2">Demo Accounts:</p>
         <div className="space-y-1 text-xs text-muted-foreground">
-          <p><span className="font-medium">Admin:</span> admin@ecosphere.com / Admin@123</p>
-          <p><span className="font-medium">Manager:</span> manager@ecosphere.com / Manager@123</p>
-          <p><span className="font-medium">Employee:</span> employee@ecosphere.com / Employee@123</p>
+          <p><span className="font-medium">Admin:</span> admin@ecosphere.com / password123</p>
+          <p><span className="font-medium">Employee 1:</span> jane@ecosphere.com / password123</p>
+          <p><span className="font-medium">Employee 2:</span> john@ecosphere.com / password123</p>
         </div>
       </div>
     </div>

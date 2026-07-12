@@ -7,16 +7,16 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import EcoSphereCanvas from '@/components/3d/EcoSphereCanvas';
 
 export default function AuthLayout() {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background overflow-hidden">
-      {/* Gradient Background Blobs */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
-      </div>
+      {/* 3D Background */}
+      <EcoSphereCanvas />
+
+      {/* Subtle overlay gradient to ensure text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/90" />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}

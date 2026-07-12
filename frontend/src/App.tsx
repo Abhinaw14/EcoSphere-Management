@@ -14,11 +14,13 @@ import { ThemeProvider } from '@/context/ThemeContext';
 // Layouts
 import MainLayout from '@/layouts/MainLayout';
 import AuthLayout from '@/layouts/AuthLayout';
+import PublicLayout from '@/layouts/PublicLayout';
 
 // Guards
 import ProtectedRoute from '@/components/common/ProtectedRoute';
 
 // Pages
+import LandingPage from '@/pages/public/LandingPage';
 import LoginPage from '@/pages/auth/LoginPage';
 import DashboardPage from '@/pages/dashboard/DashboardPage';
 import DepartmentsPage from '@/pages/departments/DepartmentsPage';
@@ -66,6 +68,11 @@ export default function App() {
         <AuthProvider>
           <BrowserRouter>
             <Routes>
+              {/* Public Routes */}
+              <Route element={<PublicLayout />}>
+                <Route path={ROUTES.HOME} element={<LandingPage />} />
+              </Route>
+
               {/* Auth Routes */}
               <Route element={<AuthLayout />}>
                 <Route path={ROUTES.LOGIN} element={<LoginPage />} />
@@ -116,7 +123,7 @@ export default function App() {
               </Route>
 
               {/* Catch-all */}
-              <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+              <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
             </Routes>
           </BrowserRouter>
 
