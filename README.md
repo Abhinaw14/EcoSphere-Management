@@ -79,11 +79,6 @@ EcoSphere is a comprehensive Environmental, Social, and Governance (ESG) managem
    - Terminal 1 (Backend): `cd backend && npm run dev`
    - Terminal 2 (Frontend): `cd frontend && npm run dev`
 
-7. **Login:**
-   Access the dashboard at `http://localhost:5173`. 
-   - **Email:** `admin@ecosphere.com`
-   - **Password:** `password123`
-
 ## 🤝 Contributing
 Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
 
