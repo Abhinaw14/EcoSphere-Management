@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { rewardService } from '@/services/reward.service';
 import { gamificationService } from '@/services/gamification.service';
 import { Reward } from '@/types';
+import confetti from 'canvas-confetti';
 import { Plus, Trash2, Gift, ShoppingBag, Coins } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -43,6 +44,12 @@ export default function RewardsPage() {
   const redeemMutation = useMutation({
     mutationFn: rewardService.redeem,
     onSuccess: () => {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#ec4899', '#fce7f3', '#f472b6', '#fbbf24']
+      });
       alert('Reward redeemed successfully!');
       queryClient.invalidateQueries({ queryKey: ['rewards'] });
       // Invalidate leaderboard or user data to refresh XP if needed

@@ -39,6 +39,7 @@ import challengeRoutes from './modules/gamification/routes/challenge.routes';
 import badgeRoutes from './modules/gamification/routes/badge.routes';
 import leaderboardRoutes from './modules/gamification/routes/leaderboard.routes';
 import rewardRoutes from './modules/rewards/routes/reward.routes';
+import chatbotRoutes from './modules/chatbot/routes/chatbot.routes';
 
 const app = express();
 
@@ -103,6 +104,7 @@ app.use(`${API_PREFIX}/challenges`, challengeRoutes);
 app.use(`${API_PREFIX}/badges`, badgeRoutes);
 app.use(`${API_PREFIX}/leaderboard`, leaderboardRoutes);
 app.use(`${API_PREFIX}/rewards`, rewardRoutes);
+app.use(`${API_PREFIX}/chatbot`, chatbotRoutes);
 
 // Health check
 app.get(`${API_PREFIX}/health`, (_req, res) => {

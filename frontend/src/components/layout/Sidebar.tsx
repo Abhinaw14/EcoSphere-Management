@@ -22,6 +22,10 @@ import {
   ChevronDown,
   ChevronRight,
   Sparkles,
+  TreePine,
+  Medal,
+  Target,
+  Globe,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -30,10 +34,10 @@ import { ROUTES } from '@/constants/routes';
 
 interface NavItem {
   title: string;
-  href: string;
+  href?: string;
   icon: React.ComponentType<{ className?: string }>;
   roles?: Role[];
-  children?: { title: string; href: string }[];
+  children?: { title: string; href: string; icon?: React.ComponentType<{ className?: string }> }[];
 }
 
 const navigation: NavItem[] = [
@@ -60,6 +64,7 @@ const navigation: NavItem[] = [
     icon: Leaf,
     children: [
       { title: 'Overview', href: ROUTES.ENVIRONMENTAL },
+      { title: 'Interactive Map', href: '/environmental/map', icon: Globe },
       { title: 'Emission Factors', href: ROUTES.EMISSION_FACTORS },
       { title: 'Product Profiles', href: ROUTES.PRODUCT_PROFILES },
       { title: 'Goals', href: ROUTES.ENVIRONMENTAL_GOALS },
@@ -92,9 +97,10 @@ const navigation: NavItem[] = [
     href: ROUTES.GAMIFICATION,
     icon: Trophy,
     children: [
-      { title: 'Challenges', href: ROUTES.CHALLENGES },
-      { title: 'Badges', href: ROUTES.BADGES },
-      { title: 'Leaderboard', href: ROUTES.LEADERBOARD },
+      { title: 'Leaderboard', href: ROUTES.LEADERBOARD, icon: Trophy },
+      { title: 'Virtual Forest', href: '/gamification/forest', icon: TreePine },
+      { title: 'Badges', href: ROUTES.BADGES, icon: Medal },
+      { title: 'Challenges', href: ROUTES.CHALLENGES, icon: Target },
     ],
   },
   {
@@ -229,7 +235,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
           return (
             <NavLink
               key={item.title}
-              to={item.href}
+              to={item.href || '#'}
               title={collapsed ? item.title : undefined}
               className={({ isActive }) =>
                 cn(

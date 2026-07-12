@@ -28,6 +28,7 @@ import EmissionFactorsPage from '@/pages/environmental/EmissionFactorsPage';
 import ProductProfilesPage from '@/pages/environmental/ProductProfilesPage';
 import EnvironmentalGoalsPage from '@/pages/environmental/EnvironmentalGoalsPage';
 import CarbonTransactionsPage from '@/pages/environmental/CarbonTransactionsPage';
+import InteractiveMapPage from '@/pages/environmental/InteractiveMapPage';
 import SocialPage from '@/pages/social/SocialPage';
 import CSRActivitiesPage from '@/pages/social/CSRActivitiesPage';
 import ParticipationsPage from '@/pages/social/ParticipationsPage';
@@ -40,6 +41,7 @@ import CompliancePage from '@/pages/governance/CompliancePage';
 import ChallengesPage from '@/pages/gamification/ChallengesPage';
 import BadgesPage from '@/pages/gamification/BadgesPage';
 import LeaderboardPage from '@/pages/gamification/LeaderboardPage';
+import VirtualForestPage from '@/pages/gamification/VirtualForestPage';
 import RewardsPage from '@/pages/rewards/RewardsPage';
 
 import ReportsPage from '@/pages/ReportsPage';
@@ -89,6 +91,7 @@ export default function App() {
                 <Route path={ROUTES.DEPARTMENTS} element={<DepartmentsPage />} />
                 <Route path={ROUTES.CATEGORIES} element={<CategoriesPage />} />
                 <Route path={ROUTES.ENVIRONMENTAL} element={<EnvironmentalPage />} />
+                <Route path="/environmental/map" element={<InteractiveMapPage />} />
                 <Route path={ROUTES.EMISSION_FACTORS} element={<EmissionFactorsPage />} />
                 <Route path={ROUTES.PRODUCT_PROFILES} element={<ProductProfilesPage />} />
                 <Route path={ROUTES.ENVIRONMENTAL_GOALS} element={<EnvironmentalGoalsPage />} />
@@ -104,6 +107,7 @@ export default function App() {
                 <Route path={ROUTES.CHALLENGES} element={<ChallengesPage />} />
                 <Route path={ROUTES.BADGES} element={<BadgesPage />} />
                 <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
+                <Route path="/gamification/forest" element={<VirtualForestPage />} />
                 <Route path={ROUTES.REWARDS} element={<RewardsPage />} />
                 <Route path={ROUTES.REPORTS} element={<ReportsPage />} />
                 <Route path={ROUTES.NOTIFICATIONS} element={<NotificationsPage />} />

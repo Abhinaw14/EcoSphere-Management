@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import Sidebar from '@/components/layout/Sidebar';
 import Topbar from '@/components/layout/Topbar';
+import { ECObotWidget } from '@/components/chat/ECObotWidget';
 
 export default function MainLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -36,6 +37,7 @@ export default function MainLayout() {
           <Outlet />
         </motion.div>
       </main>
+      <ECObotWidget />
     </div>
   );
 }

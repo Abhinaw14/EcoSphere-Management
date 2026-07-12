@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { environmentalService } from '@/services/environmental.service';
 import { departmentService } from '@/services/department.service';
+import api from '@/services/api';
 import { EnvironmentalType, EnvironmentalMetric } from '@/types';
-import { Plus, Leaf, Droplets, Zap, Trash2, Wind } from 'lucide-react';
+import { Plus, Leaf, Droplets, Zap, Trash2, Wind, Download, FileText, FileSpreadsheet } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -64,6 +65,24 @@ export default function EnvironmentalPage() {
     });
   };
 
+  const downloadReport = async (type: 'pdf' | 'csv') => {
+    try {
+      const response = await api.get(`/reports/export/${type}`, {
+        responseType: 'blob', // Important for file downloads
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `ecosphere-report.${type}`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error(`Failed to download ${type.toUpperCase()}:`, error);
+      alert('Failed to download report.');
+    }
+  };
+
   // Prepare data for chart
   const chartData = Object.values(EnvironmentalType).map((type) => {
     const typeMetrics = metrics.filter((m) => m.type === type);
@@ -101,9 +120,17 @@ export default function EnvironmentalPage() {
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Environmental Impact</h1>
           <p className="text-muted-foreground mt-1">Track and manage your organization's ecological footprint.</p>
         </div>
-        <Button onClick={() => setIsFormOpen(!isFormOpen)} className="bg-primary hover:bg-primary/90">
-          <Plus className="mr-2 h-4 w-4" /> Add Metric
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => downloadReport('csv')} className="border-border">
+            <FileSpreadsheet className="mr-2 h-4 w-4 text-emerald-600" /> CSV
+          </Button>
+          <Button variant="outline" onClick={() => downloadReport('pdf')} className="border-border">
+            <FileText className="mr-2 h-4 w-4 text-red-500" /> PDF
+          </Button>
+          <Button onClick={() => setIsFormOpen(!isFormOpen)} className="bg-primary hover:bg-primary/90">
+            <Plus className="mr-2 h-4 w-4" /> Add Metric
+          </Button>
+        </div>
       </div>
 
       {isFormOpen && (

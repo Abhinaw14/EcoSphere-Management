@@ -7,5 +7,7 @@ const router = Router();
 router.use(authenticateJWT);
 
 router.get('/analytics', reportController.getAnalytics);
+router.get('/export/pdf', reportController.exportPDF);
+router.get('/export/csv', reportController.exportCSV);
 
 export default router;

@@ -27,3 +27,22 @@ export const getLeaderboard = async (req: Request, res: Response, next: NextFunc
     next(error);
   }
 };
+
+export const getForestStatus = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const users = await prisma.user.findMany({
+      select: { xpPoints: true }
+    });
+
+    const totalXP = users.reduce((sum, user) => sum + user.xpPoints, 0);
+    const totalTrees = Math.floor(totalXP / 500); // 1 tree per 500 XP
+
+    sendSuccess(res, {
+      totalXP,
+      totalTrees,
+      nextTreeAt: (totalTrees + 1) * 500
+    }, 'Forest status retrieved successfully');
+  } catch (error) {
+    next(error);
+  }
+};

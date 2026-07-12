@@ -6,5 +6,6 @@ const router = Router();
 
 router.use(authenticateJWT);
 router.get('/', leaderboardController.getLeaderboard);
+router.get('/forest', leaderboardController.getForestStatus);
 
 export default router;
